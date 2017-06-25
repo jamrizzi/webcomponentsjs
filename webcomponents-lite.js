@@ -581,10 +581,12 @@ if (typeof WeakMap === "undefined") {
     WeakMap.prototype = {
       set: function(key, value) {
         var entry = key[this.name];
-        if (entry && entry[0] === key) entry[1] = value; else defineProperty(key, this.name, {
-          value: [ key, value ],
-          writable: true
-        });
+        try {
+          if (entry && entry[0] === key) entry[1] = value; else defineProperty(key, this.name, {
+            value: [ key, value ],
+            writable: true
+          });
+        } catch(err) {}
         return this;
       },
       get: function(key) {
